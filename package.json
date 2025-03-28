@@ -43,5 +43,10 @@
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier ./src --write",
     "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "dadata-suggestions": "^1.1.1",
+    "https-browserify": "^1.0.0",
+    "stream-browserify": "^3.0.0"
   }
 }
