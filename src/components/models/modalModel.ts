@@ -1,4 +1,3 @@
-
 export class ModalModel {
 	protected _currentData: any = null;
 	constructor() {

@@ -18,7 +18,6 @@ import { OrderModel } from './components/models/order';
 import { paymentMethods } from './utils/constants';
 import { ProductOpen } from './components/views/productOpen';
 
-
 const api = new Api(API_URL);
 const events = new EventEmitter();
 const productModel = new ProductModel(events);

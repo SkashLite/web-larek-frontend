@@ -32,5 +32,4 @@ export class Modal extends BaseView<HTMLElement> {
 		this._modalContent.innerHTML = '';
 		this.events.emit('modal:close');
 	}
-
 }
