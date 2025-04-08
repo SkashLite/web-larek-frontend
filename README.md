@@ -160,20 +160,28 @@ yarn build
 
 ## Основные интерфейсы
 
-interface IProduct {
-id: string;
-description: string;
-image: string;
-title: string;
-category: string;
-price: number | null;
-}
+### `IProduct`
+Интерфейс данных о товаре.
 
-interface Order {
-payment: string;
-email: string;
-phone: string;
-address: string;
-total: number;
-items: string[];
-}
+| Поле         | Тип                | Описание                                  |
+|--------------|--------------------|-------------------------------------------|
+| `id`         | `string`           | Уникальный идентификатор товара           |
+| `description`| `string`           | Подробное описание товара                 |
+| `image`      | `string`           | URL изображения товара                    |
+| `title`      | `string`           | Название товара                           |
+| `category`   | `string`           | Категория товара (например, "софт-скил")  |
+| `price`      | `number \| null`   | Цена товара (может быть `null` — «Бесценно») |
+
+---
+
+### `Order`
+Интерфейс данных заказа.
+
+| Поле       | Тип          | Описание                                  |
+|------------|--------------|-------------------------------------------|
+| `payment`  | `string`     | Способ оплаты (например, "онлайн")        |
+| `email`    | `string`     | Email покупателя                          |
+| `phone`    | `string`     | Телефон покупателя                        |
+| `address`  | `string`     | Адрес доставки                            |
+| `total`    | `number`     | Итоговая сумма заказа                     |
+| `items`    | `string[]`   | Массив ID товаров в заказе                |
