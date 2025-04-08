@@ -2,7 +2,7 @@ import { CDN_URL } from '../../utils/constants';
 import { ensureElement } from '../../utils/utils';
 import { BaseView } from '../base/baseView';
 import { EventEmitter } from '../base/events';
-
+import { category } from '../../utils/constants';
 export class ProductView extends BaseView<HTMLElement> {
 	protected _descriptionElement: HTMLElement | null;
 	protected _imageElement: HTMLImageElement | null;
@@ -25,58 +25,48 @@ export class ProductView extends BaseView<HTMLElement> {
 
 		container.addEventListener('click', () => {
 			const productId = container.dataset.id;
-  		if (productId) {
-    		this.events.emit('product:open-modal', { id: productId });
+			if (productId) {
+				this.events.emit('product:open-modal', { id: productId });
 			}
 		});
 	}
 
 	set title(value: string) {
 		if (this._titleElement) {
-      this.setText(this._titleElement, value);
-    }
+			this.setText(this._titleElement, value);
+		}
 	}
 
 	set category(value: string) {
 		if (this._categoryElement) {
 			this._categoryElement.className = 'card__category';
-      this.setText(this._categoryElement, value);
-      switch (value) {
-        case 'софт-скил':
-          this._categoryElement.classList.add('card__category_soft');
-          break;
-        case 'хард-скил':
-          this._categoryElement.classList.add('card__category_hard');
-          break;
-        case 'дополнительное':
-          this._categoryElement.classList.add('card__category_additional');
-          break;
-        case 'другое':
-          this._categoryElement.classList.add('card__category_other');
-          break;
-        case 'кнопка':
-          this._categoryElement.classList.add('card__category_button');
-      }
-    }
+			this.setText(this._categoryElement, value);
+			const categoryKey = Object.keys(category).find(
+				(key) => category[key as keyof typeof category] === value
+			);
+			if (categoryKey) {
+				this._categoryElement.classList.add(`card__category_${categoryKey}`);
+			}
+		}
 	}
 
-	set price(value: string){
-		let price = String(value) + " синапсов";
+	set price(value: string) {
+		let price = String(value) + ' синапсов';
 		if (value === null) {
-			price = 'Бесценно'
+			price = 'Бесценно';
 		}
 		this.setText(this._priceElement, price);
 	}
 
-	set image(value: string){
+	set image(value: string) {
 		if (this._imageElement) {
-      this._imageElement.src = CDN_URL + value;
-    }
+			this._imageElement.src = CDN_URL + value;
+		}
 	}
 
-	set description(value: string){
+	set description(value: string) {
 		if (this._descriptionElement) {
-      this.setText(this._descriptionElement, value);
-    }
+			this.setText(this._descriptionElement, value);
+		}
 	}
 }

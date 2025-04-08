@@ -1,23 +1,21 @@
-import { IProduct } from "../../types";
-import { EventEmitter } from "../base/events";
+import { IProduct } from '../../types';
+import { EventEmitter } from '../base/events';
 
-export class ProductModel{
+export class ProductModel {
+	protected _productCards: IProduct[];
 
-  protected _productCards: IProduct[];
+	productModel: IProduct;
 
-  productModel: IProduct;
- 
+	constructor(protected events: EventEmitter) {
+		this._productCards = [];
+	}
 
-  constructor(protected events: EventEmitter) {
-    this._productCards = [];
-  }
+	set productCards(data: IProduct[]) {
+		this._productCards = data;
+		this.events.emit('item:change');
+	}
 
-  set productCards(data: IProduct[]) {
-    this._productCards = data;
-    this.events.emit('item:change');
-  }
-
-  get productCards() {
-    return this._productCards;
-  }
+	get productCards() {
+		return this._productCards;
+	}
 }
