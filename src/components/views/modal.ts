@@ -22,13 +22,13 @@ export class Modal extends BaseView<HTMLElement> {
 	}
 
 	open(container: HTMLElement) {
-		this._modalElement.classList.add('modal_active');
+		this.toggleClass(this._modalElement, 'modal_active', true);
 		this._modalContent.append(container);
 		this.events.emit('modal:open');
 	}
 
 	close() {
-		this._modalElement.classList.remove('modal_active');
+		this.toggleClass(this._modalElement, 'modal_active', false);
 		this._modalContent.innerHTML = '';
 		this.events.emit('modal:close');
 	}

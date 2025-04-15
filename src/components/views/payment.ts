@@ -35,9 +35,9 @@ export class PaymentView extends BaseView<HTMLElement> {
 			const target = event.target as HTMLElement;
 			if (target && target.classList.contains('button')) {
 				this.buttonAlt.forEach((button) =>
-					button.classList.remove('button_alt-active')
+					this.toggleClass(button, 'button_alt-active', false)
 				);
-				target.classList.add('button_alt-active');
+				this.toggleClass(target, 'button_alt-active', true);
 				this.events.emit('payment:method-changed', {
 					selectedText: target.textContent,
 				});

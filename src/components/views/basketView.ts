@@ -12,14 +12,8 @@ export class BasketView extends BaseView<IProduct> {
 	constructor(container: HTMLElement, event: EventEmitter) {
 		super(container);
 		this.basketList = ensureElement('.basket__list', this.container);
-		this.basketButton = ensureElement(
-			'.basket__button',
-			this.container
-		) as HTMLButtonElement;
-		this.sumBasket = ensureElement(
-			'.basket__price',
-			this.container
-		) as HTMLElement;
+		this.basketButton = ensureElement('.basket__button', this.container) as HTMLButtonElement;
+		this.sumBasket = ensureElement('.basket__price', this.container);
 		this.events = event;
 
 		this.basketButton.addEventListener('click', () => {
@@ -27,47 +21,17 @@ export class BasketView extends BaseView<IProduct> {
 		});
 	}
 
-	renderBasket(products: IProduct[]) {
+	renderBasket(items: HTMLElement[]) {
 		this.basketList.innerHTML = '';
-		products.forEach((product, index) => {
-			const basketItem = this.createBasketItem(product, index);
-			this.basketList.appendChild(basketItem);
-		});
-		this.updateBasketButtonState(products);
-	}
-
-	createBasketItem(product: IProduct, index: number): HTMLElement {
-		const basketItem = cloneTemplate('#card-basket');
-		this.setText(
-			basketItem.querySelector('.card__title') as HTMLElement,
-			product.title
-		);
-		this.setText(
-			basketItem.querySelector('.card__price') as HTMLElement,
-			product.price != null ? `${product.price} синапсов` : 'Бесценно'
-		);
-		this.setText(
-			basketItem.querySelector('.basket__item-index') as HTMLElement,
-			`${index + 1}`
-		);
-
-		const deleteItem = basketItem.querySelector(
-			'.basket__item-delete'
-		) as HTMLElement;
-		deleteItem.addEventListener('click', () => this.removeProduct(product.id));
-
-		return basketItem;
-	}
-
-	removeProduct(productId: string) {
-		this.events.emit<{ id: string }>('basket:item-remove', { id: productId });
+		items.forEach((item) => this.basketList.appendChild(item));
+		this.updateBasketButtonState(items);
 	}
 
 	updateBasketSum(value: number) {
 		this.setText(this.sumBasket, `${value} синапсов`);
 	}
 
-	updateBasketButtonState(products: IProduct[]) {
-		this.basketButton.disabled = products.length === 0;
+	updateBasketButtonState(items: HTMLElement[]) {
+		this.basketButton.disabled = items.length === 0;
 	}
-}
+}	

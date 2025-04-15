@@ -6,6 +6,7 @@ export class ContactView extends BaseView<HTMLElement> {
 	protected email: HTMLInputElement;
 	protected phone: HTMLInputElement;
 	protected buttonPayment: HTMLButtonElement;
+
 	constructor(container: HTMLElement, event: EventEmitter) {
 		super(container);
 		this.email = ensureElement(
@@ -21,38 +22,42 @@ export class ContactView extends BaseView<HTMLElement> {
 			container
 		) as HTMLButtonElement;
 
+		// Отправка события при изменении значений
 		this.email.addEventListener('input', () => {
-			this.activationButton();
+			event.emit('contact:change', {
+				email: this.email.value,
+				phone: this.phone.value,
+			});
 		});
 
 		this.phone.addEventListener('input', () => {
-			this.activationButton();
+			event.emit('contact:change', {
+				email: this.email.value,
+				phone: this.phone.value,
+			});
 		});
 
+		// Обработчик клика по кнопке "Оплатить"
 		this.buttonPayment.addEventListener('click', () => {
+			this.email.reportValidity();
+			this.phone.reportValidity();
 			event.emit('pay:end');
 		});
 	}
-	checkEmail() {
-		const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9-]+\.[A-Z]{2,4}$/i;
-		return emailPattern.test(this.email.value);
+
+	// Метод для отображения ошибок на полях
+	showErrors(errors: { email?: string; phone?: string }) {
+		this.email.setCustomValidity(errors.email ?? '');
+		this.phone.setCustomValidity(errors.phone ?? '');
+		if (errors.email) {
+			this.email.reportValidity();  // Для email только, если ошибка
+		} else {
+			this.phone.reportValidity();  // Для phone
+		}
 	}
 
-	get emailValue() {
-		return this.email.value;
-	}
-
-	checkPhone() {
-		const phonePattern = /^\+7\s?\(?\d{3}\)?\s?\d{3}[-.\s]?\d{2}[-.\s]?\d{2}$/;
-		return phonePattern.test(this.phone.value);
-	}
-
-	get phoneValue() {
-		return this.phone.value;
-	}
-
-	activationButton() {
-		const isValid = this.checkEmail() && this.checkPhone();
-		this.setDisabled(this.buttonPayment, !isValid);
+	// Метод для отключения/включения кнопки оплаты
+	setDisabledButton(state: boolean) {
+		this.setDisabled(this.buttonPayment, state);
 	}
 }

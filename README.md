@@ -60,6 +60,58 @@ yarn build
 
 ---
 
+## Базовые классы 
+
+### `Api` (`api.ts`)
+
+**Назначение**: Управление HTTP-запросами к API сервера. Обеспечивает выполнение GET/POST-запросов и обработку ответов.
+
+- **Свойства**:
+  - `baseUrl: string` - базовый URL API-сервера (только для чтения)
+  - `options: RequestInit` - конфигурация запросов (заголовки и другие настройки)
+
+- **Методы**:
+  - `constructor(baseUrl: string, options?: RequestInit)` - инициализирует базовый URL и параметры запроса:
+  - `get(uri: string)` - выполняет GET-запрос:
+  - `post(uri: string, data: object, method: ApiPostMethods = 'POST')` - выполняет POST/PUT/DELETE-запрос с телом:
+  - `protected handleResponse(response: Response)` - внутренний обработчик ответов:
+    - Возвращает `Promise<object>` при успешном статусе (200-299)
+    - Генерирует ошибку с текстом из `data.error` или `statusText` при ошибках
+###
+
+### `BaseView<T>` (`baseView.ts`)
+
+**Назначение**: Базовый абстрактный класс для создания UI-компонентов. Предоставляет общие методы для работы с DOM-элементами.
+
+- **Параметры конструктора**:
+  - `container: HTMLElement` - корневой элемент компонента (protected, readonly)
+
+- **Методы**:
+  - `toggleClass(element: HTMLElement, className: string, force?: boolean)` - переключает CSS-класс элемента:
+  - `setText(element: HTMLElement, value: unknown)` - устанавливает текстовое содержимое элемента:
+  - `setDisabled(element: HTMLElement, state: boolean)` - управляет состоянием disabled:
+  - `setHidden(element: HTMLElement)` - скрывает элемент (display: none)
+  - `setVisible(element: HTMLElement)` - показывает элемент (display: default)
+  - `setImage(element: HTMLImageElement, src: string, alt?: string)` - обновляет изображение:
+  - `render(data?: Partial<T>): HTMLElement` - базовый метод рендеринга (требует реализации):
+
+### `EventEmitter` (`events.ts`)
+
+**Назначение**: Реализация паттерна "Наблюдатель" для управления событиями. Поддерживает подписку на события по имени, регулярным выражениям или всем событиям.
+
+**Типы**:
+- `EventName = string | RegExp` - имя события (строка/регулярное выражение)
+- `Subscriber = Function` - функция-обработчик события
+- `EmitterEvent` - объект события:
+
+**Методы**:
+ - `on()` - подписка на событие/шаблон
+ - `off()` - отмена подписки
+ - `emit()` - генерация события
+ - `onAll()` - подписка на все события ('*')
+ - `offAll()` - полный сброс подписок
+ - `trigger()` - создание функции-триггера события
+
 ## Модели (Models)
 
 ### 1. `ProductModel` (`productModel.ts`)
@@ -102,6 +154,26 @@ yarn build
 - **Свойства**:
   - `(set, get)currentData` — данные текущего модального окна.
 
+### 5.`LarekApi` (`larekApi.ts`)
+
+**Назначение**: Фасад для работы с API магазина. Инкапсулирует логику взаимодействия с базовым API-клиентом.
+
+- **Зависимости**:
+  - `Api` - базовый HTTP-клиент
+  - `settings` - конфигурация API-эндпоинтов
+
+### 6. `ContactModel` (`contactModel.ts`)
+
+**Назначение**: Форма ввода контактных данных.
+
+- **Методы**:
+  - `iValid()` — возвращает true|false в зависимости от валидности полей.
+  - `getValidationErrors()` — ошибки валидации.
+  - `getEmail()` - возвращает значение email.
+  - `getPhone()` - возвращает значение phone.
+  - `checkEmail()` - проверяет email.
+  - `checkPhone()` - проверяет phone.
+  - `setContact()` - записывает  phone и email.
 ---
 
 ## Представления (Views)
@@ -121,16 +193,13 @@ yarn build
 - **Методы**:
   - `renderBasket(products: IProduct[])` — рендерит список товаров в корзине.
   - `updateBasketSum(value: number)` — обновляет итоговую сумму.
-  - `removeProduct(productId: string)` — создает событие удаления продукта.
   - `updateBasketButtonState(products: IProduct[])` — делает кнопку не активной если товаров нет в корзине.
-  - `reateBasketItem(product: IProduct, index: number)` — Создает HTML-элемент товара в корзине на основе переданных данных.
 
 ### 3. `ContactView` (`contactView.ts`)
 
 **Назначение**: Форма ввода контактных данных.
 
 - **Методы**:
-  - `checkEmail()`, `checkPhone()` — валидация данных.
   - `activationButton()` — активация кнопки оплаты.
   - `emailValue()` - возвращает значение email.
   - `phoneValue()` - возвращает значение phone.
@@ -144,7 +213,15 @@ yarn build
   - `getTextForm()` — возвращает введенный адрес.
   - `isActiveButton` — проверяет, активирован ли хотя бы один из элементов управления (кнопок) с классом button_alt
 
-### 5. `Modal` (`modal.ts`)
+
+### 5. ``BasketItemView` (`basketItemView.ts`)`
+  **Назначение**: Отображение элемента корзины. Реализует UI для одного товара в корзине и обработку его удаления.
+
+  - **Методы**:
+    - `remove()` — Удаляет элемент из DOM-дерева
+
+
+### 6. `Modal` (`modal.ts`)
 
 **Назначение**: Управление модальными окнами.
 

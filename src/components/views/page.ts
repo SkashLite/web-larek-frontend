@@ -1,6 +1,6 @@
 import { ensureElement } from '../../utils/utils';
-import { BaseView } from './baseView';
-import { EventEmitter } from './events';
+import { BaseView } from '../base/baseView';
+import { EventEmitter } from '../base/events';
 
 interface IPage {
 	cardList?: HTMLElement[];
@@ -29,7 +29,7 @@ export class Page extends BaseView<IPage> {
 	}
 
 	basketCounterRender(data: string) {
-		this.basketCounter.textContent = data;
+		this.setText(this.basketCounter, data);
 	}
 
 	set cardList(data: HTMLElement[]) {
@@ -38,9 +38,10 @@ export class Page extends BaseView<IPage> {
 
 	set locked(value: boolean) {
 		if (value) {
-			this.wrapper.classList.add('page__wrapper_locked');
+			this.toggleClass(this.wrapper, 'page__wrapper_locked', true);
 		} else {
-			this.wrapper.classList.remove('page__wrapper_locked');
+			this,
+				this.toggleClass(this.wrapper, 'page__wrapper_locked', false);
 		}
 	}
 }

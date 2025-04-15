@@ -45,7 +45,7 @@ export class ProductView extends BaseView<HTMLElement> {
 				(key) => category[key as keyof typeof category] === value
 			);
 			if (categoryKey) {
-				this._categoryElement.classList.add(`card__category_${categoryKey}`);
+				this.toggleClass(this._categoryElement, `card__category_${categoryKey}`, true);
 			}
 		}
 	}
@@ -60,6 +60,7 @@ export class ProductView extends BaseView<HTMLElement> {
 
 	set image(value: string) {
 		if (this._imageElement) {
+			this.setImage(this._imageElement, CDN_URL + value);
 			this._imageElement.src = CDN_URL + value;
 		}
 	}
