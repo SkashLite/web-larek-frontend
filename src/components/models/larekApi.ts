@@ -33,7 +33,6 @@ export class LarekApi {
 			});
 	}
 
-	// Метод для отправки заказа
 	postOrder(
 		orderData: any,
 		callback: (response: PostOrderResponse) => void,

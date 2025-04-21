@@ -22,7 +22,6 @@ export class ContactView extends BaseView<HTMLElement> {
 			container
 		) as HTMLButtonElement;
 
-		// Отправка события при изменении значений
 		this.email.addEventListener('input', () => {
 			event.emit('contact:change', {
 				email: this.email.value,
@@ -37,7 +36,6 @@ export class ContactView extends BaseView<HTMLElement> {
 			});
 		});
 
-		// Обработчик клика по кнопке "Оплатить"
 		this.buttonPayment.addEventListener('click', () => {
 			this.email.reportValidity();
 			this.phone.reportValidity();
@@ -45,19 +43,25 @@ export class ContactView extends BaseView<HTMLElement> {
 		});
 	}
 
-	// Метод для отображения ошибок на полях
 	showErrors(errors: { email?: string; phone?: string }) {
 		this.email.setCustomValidity(errors.email ?? '');
 		this.phone.setCustomValidity(errors.phone ?? '');
 		if (errors.email) {
-			this.email.reportValidity();  // Для email только, если ошибка
+			this.email.reportValidity();
 		} else {
-			this.phone.reportValidity();  // Для phone
+			this.phone.reportValidity();
 		}
 	}
 
-	// Метод для отключения/включения кнопки оплаты
 	setDisabledButton(state: boolean) {
 		this.setDisabled(this.buttonPayment, state);
+	}
+
+	reset() {
+		this.email.value = '';
+		this.phone.value = '';
+		this.email.setCustomValidity('');
+		this.phone.setCustomValidity('');
+		this.setDisabledButton(true);
 	}
 }

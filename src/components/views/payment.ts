@@ -63,4 +63,12 @@ export class PaymentView extends BaseView<HTMLElement> {
 			this.setDisabled(this.button, true);
 		}
 	}
+
+	reset() {
+		this.form.value = '';
+		this.buttonAlt.forEach((button) =>
+			this.toggleClass(button, 'button_alt-active', false)
+		);
+		this.setDisabled(this.button, true);
+	}
 }

@@ -203,6 +203,7 @@ yarn build
   - `activationButton()` — активация кнопки оплаты.
   - `emailValue()` - возвращает значение email.
   - `phoneValue()` - возвращает значение phone.
+  - `reset()` - сбрасывает данные поля ввода.
 
 ### 4. `PaymentView` (`payment.ts`)
 
@@ -211,7 +212,9 @@ yarn build
 - **Методы**:
   - `checkForm()` — проверяет заполнение полей.
   - `getTextForm()` — возвращает введенный адрес.
-  - `isActiveButton` — проверяет, активирован ли хотя бы один из элементов управления (кнопок) с классом button_alt
+  - `isActiveButton` — проверяет, активирован ли хотя бы один из элементов управления (кнопок) с классом button_alt.
+  - `reset()` — сброс данных полей.
+
 
 
 ### 5. ``BasketItemView` (`basketItemView.ts`)`

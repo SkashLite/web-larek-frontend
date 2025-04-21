@@ -42,13 +42,12 @@ const contactModel = new ContactModel();
 
 larekApi.getProductList(
 	(items) => {
-			productModel.productCards = items;
+		productModel.productCards = items;
 	},
 	(error) => {
-			console.error(error);
+		console.error(error);
 	}
 );
-
 
 events.on('item:change', () => {
 	const productElements = productModel.productCards.map(createProductCard);
@@ -116,10 +115,7 @@ events.on<{ id: string }>('basket:item-remove', ({ id }) => {
 	basketView.updateBasketSum(basketModel.getTotalSum());
 	page.basketCounterRender(basketModel.getCounter().toString());
 	if (modalModel.currentData?.id === id) {
-		const currentButton = document.querySelector(
-			'.modal .card__button'
-		) as HTMLButtonElement;
-		if (currentButton) currentButton.disabled = false;
+		modal.enableBuyButton();
 	}
 });
 
@@ -170,20 +166,26 @@ events.on('pay:end', () => {
 	order.setContactInfo(contactModel.getEmail(), contactModel.getPhone());
 	modal.close();
 	larekApi.postOrder(
-    order.getOrder(),
-    (response) => {
-        console.log("Успешно отправлен заказ", response);
-    },
-    (error) => {
-        console.error(error);
-    }
-);
+		order.getOrder(),
+		(response) => {
+			console.log('Успешно отправлен заказ', response);
+			endPay.updateBasketSum(basketModel.getTotalSum());
+			basketModel.clear();
+			order.clear();
+			contactModel.clear();
+			paymentView.reset();
+			contactsView.reset();
+			page.basketCounterRender('0');
+			basketView.updateBasketSum(0);
+			modal.open(endPay.render());
+		},
+		(error) => {
+			console.error(error);
+		}
+	);
 	order.clear();
 });
 
 events.on('close', () => {
-	basketModel.clear();
-	page.basketCounterRender('0');
-	basketView.updateBasketSum(0);
 	modal.close();
 });

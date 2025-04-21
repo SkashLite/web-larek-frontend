@@ -21,6 +21,7 @@ export class BasketView extends BaseView<IProduct> {
 		});
 	}
 
+	
 	renderBasket(items: HTMLElement[]) {
 		this.basketList.innerHTML = '';
 		items.forEach((item) => this.basketList.appendChild(item));
